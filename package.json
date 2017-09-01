@@ -1,7 +1,7 @@
 {
-  "name": "fans-storage-warden",
+  "name": "fans-warden",
   "version": "1.0.0",
-  "description": "A 'localStorage' validator for the browser.",
+  "description": "A data warden designed to validate an object or the browser's 'localStorage'.",
   "main": "./dist/index.js",
   "directories": {
     "test": "__tests__"
