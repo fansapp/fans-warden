@@ -1,39 +1,43 @@
-const isRequired = (obj) => {
-  return { ...obj, required: true };
-};
+import { isObject } from './helpers';
 
 
-const skeleton = { required: false, isRequired: () => isRequired(this) };
+const typeFactory = (type) => ({
+  ...type,
+  required: false,
+  isRequired: {
+    ...type,
+    required: true,
+  },
+});
+
 const primitives = {
-  string: () => ({ ...skeleton, type: 'string', typeOf: 'string' }),
-  number: () => ({ ...skeleton, type: 'number', typeOf: 'number' }),
-  bool: () => ({ ...skeleton, type: 'bool', typeOf: 'boolean' }),
-  array: () => ({ ...skeleton, type: 'array', typeOf: 'object' }),
-  shape: () => ({ ...skeleton, type: 'shape', typeOf: 'object' }),
+  string: typeFactory({ type: 'string', typeOf: 'string' }),
+  number: typeFactory({ type: 'number', typeOf: 'number' }),
+  bool: typeFactory({ type: 'bool', typeOf: 'boolean' }),
+  array: typeFactory({ type: 'array', typeOf: 'object' }),
+  shape: typeFactory({ type: 'shape', typeOf: 'object' }),
 };
 
 const advanced = {
-  arrayOf: (of) => () => {
-    if (typeof of !== 'function'){
+  arrayOf: (of = null) => {
+    if (of === null) {
+      return primitives.array;
+    }
+    if (!isObject(of) || !Object.keys({ ...primitives, ...advanced }).some(k => k === of.type)) {
       throw "arrayOf() needs to be passed a 'Type'";
     }
-
-    if (!Object.keys({ ...primitives, ...advanced }).some(k => primitives[k]().type === of().type)) {
-      throw "arrayOf() needs to be passed a 'Type'";
-    }
-
-    return { ...skeleton, type: 'arrayOf', of, isRequired: () => isRequired(this) };
+    return typeFactory({ type: 'arrayOf', of });
   },
-
-  shapeOf: (of) => () => {
-    if (typeof of !== 'object'){
+  shapeOf: (of = null) => {
+    if (of === null) {
+      return primitives.shape;
+    }
+    if (!isObject(of)) {
       throw "shapeOf() needs to be passed an 'object'";
     }
-
-    return { ...skeleton, type: 'shapeOf', of, isRequired: () => isRequired(this) };
+    return typeFactory({ type: 'shapeOf', of });
   },
 };
-
 
 export default {
   ...primitives,

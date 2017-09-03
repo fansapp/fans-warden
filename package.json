@@ -10,7 +10,7 @@
     "test": "NODE_ENV=test mocha --opts mocha.opts || true",
     "build": "webpack",
     "dev": "webpack --watch",
-    "lint": "eslint ./src --ext .js,.jsx",
+    "lint": "eslint ./src --ext .js",
     "prepublish": "npm run build"
   },
   "keywords": [
@@ -35,8 +35,8 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
     "chai": "^4.1.1",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^4.5.0",
-    "lodash.get": "^4.4.2",
     "mocha": "^3.5.0",
     "webpack": "^3.5.5",
     "webpack-node-externals": "^1.6.0"
