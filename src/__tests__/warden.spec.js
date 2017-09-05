@@ -1,274 +1,380 @@
-import { expect } from 'chai';
+import chai, { expect } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 
 import warden, { Types } from '../index';
 
+chai.use(chaiAsPromised);
+
 const tests = () => {
+
+  // Unexpected Types
+
+  it('fails on unexpected type', () => {
+    const blueprint = {
+      a: Types.String,
+    };
+    const local = {
+      a: 25,
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
   // primitives
 
-  // it('supports primitives', () => {
-  //   const blueprint = {
-  //     age: Types.number,
-  //     name: Types.string,
-  //     isNiceGuy: Types.bool,
-  //     qualities: Types.array,
-  //     defects: Types.shape,
-  //   };
-  //   const local = {
-  //     age: 25,
-  //     name: 'justin',
-  //     isNiceGuy: true,
-  //     qualities: ['good at Guitar Hero', 'canBackflip'],
-  //     defects: { no1: 'badly judges coffee temperature', no2: 'tendency to burn eggs' },
-  //   };
-  //   expect(warden(blueprint, local)).to.eql(true);
-  // });
+  it('supports primitives', () => {
+    const blueprint = {
+      a: Types.number,
+      b: Types.string,
+      c: Types.bool,
+      d: Types.array,
+      e: Types.shape,
+    };
+    const local = {
+      a: 25,
+      b: 'b',
+      c: true,
+      d: ['a', 'b'],
+      e: { f: 'f', g: 'g' },
+    };
+    return warden(blueprint, local).then(r => expect(r).to.eql(local));
+  });
 
-  // // primitive fails
+  // primitive fails
 
-  // it('fails string primitive', () => {
-  //   const blueprint = {
-  //     age: Types.number,
-  //     name: Types.string,
-  //   };
-  //   const local = {
-  //     age: 25,
-  //     name: 25,
-  //   };
-  //   expect(() => warden(blueprint, local)).to.throw();
-  // });
+  it('fails string primitive', () => {
+    const blueprint = {
+      a: Types.number,
+      b: Types.string,
+    };
+    const local = {
+      a: 25,
+      b: 25,
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
-  // it('fails number primitive', () => {
-  //   const blueprint = {
-  //     age: Types.number,
-  //     name: Types.string,
-  //   };
-  //   const local = {
-  //     age: 'fail',
-  //     name: 'justin',
-  //   };
-  //   expect(() => warden(blueprint, local)).to.throw();
-  // });
+  it('fails number primitive', () => {
+    const blueprint = {
+      a: Types.number,
+      b: Types.string,
+    };
+    const local = {
+      a: 'a',
+      b: 'b',
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
-  // it('fails boolean primitive', () => {
-  //   const blueprint = {
-  //     name: Types.string,
-  //     isNiceGuy: Types.bool,
-  //   };
-  //   const local = {
-  //     name: 'justin',
-  //     isNiceGuy: 25,
-  //   };
-  //   expect(() => warden(blueprint, local)).to.throw();
-  // });
+  it('fails boolean primitive', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.bool,
+    };
+    const local = {
+      a: 'a',
+      b: 25,
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
-  // it('fails boolean primitive', () => {
-  //   const blueprint = {
-  //     name: Types.string,
-  //     isNiceGuy: Types.bool,
-  //   };
-  //   const local = {
-  //     name: 'justin',
-  //     isNiceGuy: 25,
-  //   };
-  //   expect(() => warden(blueprint, local)).to.throw();
-  // });
+  it('fails boolean primitive', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.bool,
+    };
+    const local = {
+      a: 'a',
+      b: 25,
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
-  // it('fails array primitive', () => {
-  //   const blueprint = {
-  //     name: Types.string,
-  //     qualities: Types.array,
-  //   };
-  //   const local = {
-  //     name: 'justin',
-  //     qualities: {},
-  //   };
-  //   expect(() => warden(blueprint, local)).to.throw();
-  // });
+  it('fails array primitive', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.array,
+    };
+    const local = {
+      a: 'a',
+      b: {},
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
-  // it('fails shape primitive', () => {
-  //   const blueprint = {
-  //     name: Types.string,
-  //     defects: Types.shape,
-  //   };
-  //   const local = {
-  //     name: 'justin',
-  //     defects: [],
-  //   };
-  //   expect(() => warden(blueprint, local)).to.throw();
-  // });
+  it('fails shape primitive', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.shape,
+    };
+    const local = {
+      a: 'a',
+      b: [],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
-  // // isRequired fail
+  // isRequired fail
 
-  // it('fails if isRequired was specified', () => {
-  //   const blueprint = {
-  //     age: Types.number,
-  //     name: Types.string.isRequired,
-  //   };
-  //   const local = {
-  //     age: 25,
-  //   };
-  //   expect(() => warden(blueprint, local)).to.throw();
-  // });
+  it('fails if isRequired was specified', () => {
+    const blueprint = {
+      a: Types.number,
+      b: Types.string.isRequired,
+    };
+    const local = {
+      a: 25,
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
-  // // arrayOf
+  // arrayOf
 
-  // it('supports arrayOf string', () => {
-  //   const blueprint = {
-  //     name: Types.string,
-  //     qualities: Types.arrayOf(Types.string),
-  //   };
-  //   const local = {
-  //     name: 'justin',
-  //     qualities: ['hey', 'wassup'],
-  //   };
-  //   expect(warden(blueprint, local)).to.eql(true);
-  // });
+  it('supports arrayOf string', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.arrayOf(Types.string),
+    };
+    const local = {
+      a: 'a',
+      b: ['b', 'c'],
+    };
+    return warden(blueprint, local).then(r => expect(r).to.eql(local));
+  });
 
-  // it('supports arrayOf number', () => {
-  //   const blueprint = {
-  //     name: Types.string,
-  //     qualities: Types.arrayOf(Types.number),
-  //   };
-  //   const local = {
-  //     name: 'justin',
-  //     qualities: [12, 12],
-  //   };
-  //   expect(warden(blueprint, local)).to.eql(true);
-  // });
+  it('supports arrayOf number', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.arrayOf(Types.number),
+    };
+    const local = {
+      a: 'a',
+      b: [12, 12],
+    };
+    return warden(blueprint, local).then(r => expect(r).to.eql(local));
+  });
 
+  it('supports nested arrayOf', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.arrayOf(Types.shapeOf({
+        c: Types.string,
+        d: Types.number,
+      })),
+    };
+    const local = {
+      a: 'a',
+      b: [
+        {
+          c: '12',
+          d: 12,
+        },
+        {
+          c: '12',
+          d: 12,
+        },
+      ],
+    };
+    return warden(blueprint, local).then(r => expect(r).to.eql(local));
+  });
 
-  // it('supports arrayOf string error', () => {
-  //   const blueprint = {
-  //     name: Types.string,
-  //     qualities: Types.arrayOf(Types.string),
-  //   };
-  //   const local = {
-  //     name: 'justin',
-  //     qualities: [12, 12],
-  //   };
-  //   expect(() => warden(blueprint, local)).to.throw();
-  // });
+  // arrayOf fails
 
-  // it('supports arrayOf string error', () => {
-  //   const blueprint = {
-  //     name: Types.string,
-  //     qualities: Types.arrayOf(Types.bool),
-  //   };
-  //   const local = {
-  //     name: 'justin',
-  //     qualities: [12, 123],
-  //   };
-  //   expect(() => warden(blueprint, local)).to.throw();
-  // });
+  it('supports arrayOf string error', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.arrayOf(Types.string),
+    };
+    const local = {
+      a: 'a',
+      b: [12, 12],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
-  // // arrayOf fails
+  it('supports arrayOf bool error', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.arrayOf(Types.bool),
+    };
+    const local = {
+      a: 'a',
+      b: [12, 123],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
-  // it('fails arrayOf strings when has number', () => {
-  //   const blueprint = {
-  //     name: Types.string,
-  //     qualities: Types.arrayOf(Types.string),
-  //   };
-  //   const local = {
-  //     name: 'justin',
-  //     qualities: ['hello', 12],
-  //   };
-  //   expect(() => warden(blueprint, local)).to.throw();
-  // });
+  it('fails arrayOf strings when has number', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.arrayOf(Types.string),
+    };
+    const local = {
+      a: 'a',
+      b: ['b', 12],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
-  // it('fails arrayOf shape when has array', () => {
-  //   const blueprint = {
-  //     name: Types.string,
-  //     qualities: Types.arrayOf(Types.shape),
-  //   };
-  //   const local = {
-  //     name: 'justin',
-  //     qualities: [[12], {}],
-  //   };
-  //   expect(() => warden(blueprint, local)).to.throw();
-  // });
+  it('fails arrayOf shape when has array', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.arrayOf(Types.shape),
+    };
+    const local = {
+      a: 'a',
+      b: [[12], {}],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
-  // it('fails arrayOf array when has object', () => {
-  //   const blueprint = {
-  //     name: Types.string,
-  //     qualities: Types.arrayOf(Types.array),
-  //   };
-  //   const local = {
-  //     name: 'justin',
-  //     qualities: [[12], {}],
-  //   };
-  //   expect(() => warden(blueprint, local)).to.throw();
-  // });
+  it('fails arrayOf array when has object', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.arrayOf(Types.array),
+    };
+    const local = {
+      a: 'a',
+      b: [[12], {}],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
+  it('fails arrayOf shapeOf with faulty types', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.arrayOf(Types.shapeOf({
+        c: Types.string,
+        d: Types.array,
+      })),
+    };
+    const local = {
+      a: 'a',
+      b: [
+        {
+          c: 'c',
+          d: [1, 2, 3],
+        },
+        {
+          c: 'c',
+          d: {},
+        },
+      ],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
-  // // shapeOf
+  it('fails arrayOf arrayOf with faulty types', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.arrayOf(Types.arrayOf(Types.string)),
+    };
+    const local = {
+      a: 'a',
+      b: [['b'], ['b'], [1]],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
-  // it('supports shapeOf', () => {
-  //   const blueprint = {
-  //     name: Types.string,
-  //     defects: Types.shapeOf({}),
-  //   };
-  //   const local = {
-  //     name: 'justin',
-  //     defects: {a: 2, b: 4 },
-  //   };
-  //   expect(warden(blueprint, local)).to.eql(true);
+  // shapeOf
 
-  // });
+  it('supports shapeOf', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.shapeOf({}),
+    };
+    const local = {
+      a: 'a',
+      b: { c: 2, d: 4 },
+    };
+    return warden(blueprint, local).then(r => expect(r).to.eql(local));
+  });
 
-  // it('supports nested shapeOf', () => {
-  //   const blueprint = {
-  //     name: Types.string,
-  //     defects: Types.shapeOf({
-  //       a: Types.string,
-  //       b: Types.number,
-  //     }),
-  //   };
-  //   const local = {
-  //     name: 'justin',
-  //     defects: { a: '2', b: 4 },
-  //   };
-  //   expect(warden(blueprint, local)).to.eql(true);
-  // });
+  it('supports nested shapeOf', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.shapeOf({
+        c: Types.string,
+        d: Types.number,
+      }),
+    };
+    const local = {
+      a: 'a',
+      b: { c: '2', d: 4 },
+    };
+    return warden(blueprint, local).then(r => expect(r).to.eql(local));
+  });
 
+  it('supports nested shapeOf with isRequired', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.shapeOf({
+        c: Types.string.isRequired,
+        d: Types.number.isRequired,
+        e: Types.bool,
+        f: Types.bool.isRequired,
+      }),
+    };
+    const local = {
+      a: 'a',
+      b: { c: '2', d: 4, f: true },
+    };
+    return warden(blueprint, local).then(r => expect(r).to.eql(local));
+  });
 
-  // // shapeOf fails
+  // shapeOf fails
 
-  // it('fails nested shapeOf with bad type', () => {
-  //   const blueprint = {
-  //     name: Types.string,
-  //     defects: Types.shapeOf({
-  //       a: Types.string,
-  //       b: Types.number,
-  //     }),
-  //   };
-  //   const local = {
-  //     name: 'justin',
-  //     defects: {a: '2', b: '4' },
-  //   };
-  //   expect(() => warden(blueprint, local)).to.throw();
-  // });
+  it('fails nested shapeOf with bad type', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.shapeOf({
+        c: Types.string,
+        d: Types.number,
+      }),
+    };
+    const local = {
+      a: 'a',
+      b: { c: '2', d: '4' },
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
 
   it('fails nested shapeOf with bad type level 2', () => {
     const blueprint = {
-      name: Types.string,
-      defects: Types.shapeOf({
-        a: Types.string,
-        b: Types.shapeOf({
-          c: Types.number.isRequired,
+      a: Types.string,
+      b: Types.shapeOf({
+        c: Types.string,
+        d: Types.shapeOf({
+          e: Types.number,
         }),
       }),
     };
     const local = {
-      name: 'justin',
-      defects: {
-        a: '2',
-        b: {
-          c: 155,
+      a: 'a',
+      b: {
+        c: '2',
+        d: {
+          e: true,
         },
       },
     };
-    expect(warden(blueprint, local)).to.eql(true);
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails isRequired inside of shapeOf', () => {
+    const blueprint = {
+      a: Types.shapeOf({
+        b: Types.shapeOf({
+          c: Types.string.isRequired,
+        }),
+      }),
+    };
+    const local = {
+      a: {
+        b: {
+          d: 12,
+        },
+      },
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
   });
 };
 

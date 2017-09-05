@@ -1,7 +1,7 @@
 {
   "name": "fans-warden",
   "version": "1.0.0",
-  "description": "A data warden designed to validate an object or the browser's 'localStorage'.",
+  "description": "A data warden designed to validate an 'object' based on a ruled blueprint. Can be used for the browser's 'localStorage' or API call requests/responses. Inspired by React's PropTypes.",
   "main": "./dist/index.js",
   "directories": {
     "test": "__tests__"
@@ -10,7 +10,7 @@
     "test": "NODE_ENV=test mocha --opts mocha.opts || true",
     "build": "webpack",
     "dev": "webpack --watch",
-    "lint": "eslint ./src --ext .js,.jsx",
+    "lint": "eslint ./src --ext .js",
     "prepublish": "npm run build"
   },
   "keywords": [
@@ -18,6 +18,10 @@
     "javascript",
     "web",
     "localStorage",
+    "REST",
+    "API",
+    "prop-types",
+    "react",
     "cookies",
     "cookie",
     "storage",
@@ -35,10 +39,9 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
     "chai": "^4.1.1",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^4.5.0",
-    "lodash.get": "^4.4.2",
     "mocha": "^3.5.0",
-    "webpack": "^3.5.5",
-    "webpack-node-externals": "^1.6.0"
+    "webpack": "^3.5.5"
   }
 }
