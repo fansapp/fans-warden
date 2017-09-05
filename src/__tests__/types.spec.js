@@ -105,6 +105,79 @@ const tests = () => {
     expect(Types.string.isRequired.values(['hello', 'hey']).required).to.eql(true);
   });
 
+  it('reflect an error when values is passed something different than an array', () => {
+    expect(() => Types.string.values('fail')).to.throw();
+  });
+
+  // min
+
+  it('reflect min', () => {
+    expect(Types.number.min(12).minValue).to.eql(12);
+  });
+
+  it('reflect min with isRequired first', () => {
+    expect(Types.number.min(12).minValue).to.eql(12);
+  });
+
+  it('reflect min with isRequired second', () => {
+    expect(Types.number.min(12).isRequired.minValue).to.eql(12);
+  });
+
+  it('reflect min with values first', () => {
+    expect(Types.number.values([1, 2, 3]).min(12).isRequired.minValue).to.eql(12);
+  });
+
+  it('reflect min with values last', () => {
+    expect(Types.number.min(12).isRequired.values([1, 2, 3]).minValue).to.eql(12);
+  });
+
+  it('reflect error if min missing argument', () => {
+    expect(() => Types.number.min()).to.throw();
+  });
+
+  // max
+
+  it('reflect max', () => {
+    expect(Types.number.max(12).maxValue).to.eql(12);
+  });
+
+  it('reflect max with isRequired first', () => {
+    expect(Types.number.max(12).maxValue).to.eql(12);
+  });
+
+  it('reflect max with isRequired second', () => {
+    expect(Types.number.max(12).isRequired.maxValue).to.eql(12);
+  });
+
+  it('reflect max with values first', () => {
+    expect(Types.number.values([1, 2, 3]).max(12).isRequired.maxValue).to.eql(12);
+  });
+
+  it('reflect max with values last', () => {
+    expect(Types.number.max(12).isRequired.values([1, 2, 3]).maxValue).to.eql(12);
+  });
+
+  it('reflect error if max missing argument', () => {
+    expect(() => Types.number.maxValue()).to.throw();
+  });
+
+  // range
+
+  it('reflect range max', () => {
+    expect(Types.number.range(11, 12).maxValue).to.eql(12);
+  });
+
+  it('reflect range min', () => {
+    expect(Types.number.range(11, 12).minValue).to.eql(11);
+  });
+
+  it('reflect error if range missing argument part 1', () => {
+    expect(() => Types.number.range()).to.throw();
+  });
+
+  it('reflect error if range missing argument part 1', () => {
+    expect(() => Types.number.range(1)).to.throw();
+  });
 };
 
 

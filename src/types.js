@@ -1,9 +1,10 @@
-import { isObject, typeFactory, values } from './helpers';
+import { isObject, typeFactory } from './helpers';
+import { values, min, max, range } from './decorators';
 
 
 const primitives = {
   string: typeFactory({ type: 'string', typeOf: 'string', values }),
-  number: typeFactory({ type: 'number', typeOf: 'number', values }),
+  number: typeFactory({ type: 'number', typeOf: 'number', minValue: null, maxValue: null, values, min, max, range }),
   bool: typeFactory({ type: 'bool', typeOf: 'boolean', values }),
   array: typeFactory({ type: 'array', typeOf: 'object', values }),
   shape: typeFactory({ type: 'shape', typeOf: 'object' }),

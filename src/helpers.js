@@ -10,6 +10,14 @@ export const isValidType = type => (
   isObject(type) && type.hasOwnProperty('required') && type.hasOwnProperty('type')
 );
 
+export const validateRange = (value, blueprint) => {
+  if (blueprint.minValue !== null && value < blueprint.minValue) {
+    throw `'${value}' needs to be at least greater than '${blueprint.minValue}'`;
+  }
+  if (blueprint.maxValue !== null && value > blueprint.maxValue) {
+    throw `'${value}' cannot be greater than '${blueprint.maxValue}'`;
+  }
+};
 
 export const typeFactory = (type) => ({
   ...type,
@@ -21,7 +29,6 @@ export const typeFactory = (type) => ({
     vals: null,
   },
 });
-
 
 export const validateValues = (localValue, typeOf, values) => {
   if (values.length === 0) {
@@ -44,14 +51,3 @@ export const validateValues = (localValue, typeOf, values) => {
     }
   }
 };
-
-export function values(vals) {
-  return {
-    ...this,
-    vals,
-    isRequired: {
-      ...this.isRequired,
-      vals,
-    },
-  };
-}
