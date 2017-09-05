@@ -11,7 +11,8 @@
     "build": "webpack",
     "dev": "webpack --watch",
     "lint": "eslint ./src --ext .js",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "travis:run": "NODE_ENV=test; mocha --opts mocha.travis.opts; npm run lint"
   },
   "keywords": [
     "browser",

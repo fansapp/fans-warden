@@ -1,3 +1,5 @@
+![](https://travis-ci.org/fansapp/fans-warden.svg?branch=master)
+
 # fans-warden
 
 A promise based 'React PropType' inspired JavaScript object validator.
