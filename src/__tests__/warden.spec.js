@@ -464,7 +464,7 @@ const tests = () => {
         {
           b: [52, false, 'hey'],
         },
-      ]
+      ],
     };
     return expect(warden(blueprint, local)).to.be.rejectedWith();
   });
@@ -499,9 +499,9 @@ const tests = () => {
     return expect(warden(blueprint, local)).to.be.rejectedWith();
   });
 
-  it('fails if values on primitive type except for array is set inside arrayOf()', () => {
+  it('fails if values on primitive type inside arrayOf does not contain the value', () => {
     const blueprint = {
-      a: Types.arrayOf(Types.string.values('d')),
+      a: Types.arrayOf(Types.string.values(['d'])),
     };
     const local = {
       a: ['a'],
@@ -515,6 +515,88 @@ const tests = () => {
     };
     const local = {
       a: [[true], ['hey'], [13]],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  // min
+
+  it('fails if min is not met', () => {
+    const blueprint = {
+      a: Types.number.min(5),
+    };
+    const local = {
+      a: 4,
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if max is not met', () => {
+    const blueprint = {
+      a: Types.number.max(5),
+    };
+    const local = {
+      a: 6,
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if range is not met part 1', () => {
+    const blueprint = {
+      a: Types.number.range(10, 15),
+    };
+    const local = {
+      a: 5,
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if range is not met part 2', () => {
+    const blueprint = {
+      a: Types.number.range(10, 15),
+    };
+    const local = {
+      a: 16,
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if range is met with faulty values', () => {
+    const blueprint = {
+      a: Types.number.values([12, 13]).range(10, 15),
+    };
+    const local = {
+      a: 11,
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if range is not met in array of number', () => {
+    const blueprint = {
+      a: Types.arrayOf(Types.number.max(4)),
+    };
+    const local = {
+      a: [5],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if range is met in array of number with faulty values', () => {
+    const blueprint = {
+      a: Types.arrayOf(Types.number.max(4)).values([2, 3]),
+    };
+    const local = {
+      a: [1],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if range is not met in arrayOf(arrayOf(number)) ', () => {
+    const blueprint = {
+      a: Types.arrayOf(Types.arrayOf(Types.number.range(1, 5))),
+    };
+    const local = {
+      a: [[1], [2], [3], [4, 5, 6]],
     };
     return expect(warden(blueprint, local)).to.be.rejectedWith();
   });

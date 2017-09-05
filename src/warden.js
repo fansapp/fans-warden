@@ -1,5 +1,5 @@
 import Types from './types';
-import { isEmpty, isObject, isArray, isValidType, validateValues } from './helpers';
+import { isEmpty, isObject, isArray, isValidType, validateValues, validateRange } from './helpers';
 
 
 const crawler = (obj, localVal) => {
@@ -39,6 +39,7 @@ const crawler = (obj, localVal) => {
         if (typeof localValue !== Types.number.typeOf) {
           throw `'${k}' needs to be a number`;
         }
+        validateRange(localValue, blueprintValue);
         if (blueprintValue.vals !== null) {
           validateValues(localValue, blueprintValue.typeOf, blueprintValue.vals);
         }
@@ -120,6 +121,9 @@ const crawler = (obj, localVal) => {
               default:
                 if (typeof v !== arrBlueprint.typeOf) {
                   throw `'${k}' needs to be an array containing the specified 'Type'`;
+                }
+                if (arrBlueprint.type === Types.number.type) {
+                  validateRange(v, arrBlueprint);
                 }
                 if (arrBlueprint.vals !== null) {
                   throw "can't set values() inside arrayOf() except it is an arrayOf() or array, did you mean arrayOf(Type).values()?";
