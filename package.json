@@ -1,6 +1,6 @@
 {
   "name": "fans-warden",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A data warden designed to validate an 'object' based on a ruled blueprint. Can be used for the browser's 'localStorage' or API call requests/responses. Inspired by React's PropTypes.",
   "main": "./dist/index.js",
   "directories": {
@@ -29,8 +29,12 @@
     "validation",
     "validator"
   ],
-  "author": "Fans Entertainment",
-  "license": "ISC",
+  "author": "FANS Entertainment",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fansapp/fans-warden/issues"
+  },
+  "homepage": "https://github.com/fansapp/fans-warden#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
