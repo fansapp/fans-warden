@@ -64,3 +64,44 @@ By adding `.isRequired` at the end of the rule (ex: `Types.string.isRequired`), 
 `Types.shapeOf()` takes an argument, which needs to be an `object` (`{}`). This object can implement keys with additional rules that you want to apply, making a deep validation.
 
 *see example above*
+
+## values()
+
+By adding the `values(array)` method, the data now has to be present inside the `array` passed to `values()`, or else the validation fails.
+You can also use `values(array)` and combinate it to `isRequired`.
+
+Here are the different **Types** that support `values(array)`:
+
+- `Types.string`
+- `Types.number`
+- `Types.bool`
+- `Types.array`
+- `Types.arrayOf()`
+
+### example
+
+```js
+import Warden, { Types } from 'fans-warden';
+
+const rules = {
+  prop1: Types.string.values(['hello', 'hey']).isRequired,
+  prop2: Types.number.isRequired.values([15, 20]),
+  prop3: Types.array.values([true, 15, 'hey']),
+  prop4: Types.arrayOf(Types.string).values(['hey', 'hello']),
+  prop5: Types.arrayOf(Types.arrayOf(Types.number).values([15, 16])),
+  prop6: Types.arrayOf(Types.shapeOf({
+    prop7: Types.number.values([15, 16]),
+    prop8: Types.string.values(['hey', 'hello']),
+  })),
+};
+
+const data = {...}; // the data you want to validate based on your rules
+
+Warden(rules, data).then((r) => {
+  console.log(`The ${r} object is valid :)`);
+}).catch((e) => {
+  console.log(`The validation failed for this reason: ${e}`);
+});
+```
+
+

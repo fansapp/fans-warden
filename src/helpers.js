@@ -6,6 +6,10 @@ export const isObject = obj => typeof obj === 'object' && !Array.isArray(obj);
 
 export const isArray = obj => Array.isArray(obj);
 
+export const isValidType = type => (
+  isObject(type) && type.hasOwnProperty('required') && type.hasOwnProperty('type')
+);
+
 
 export const typeFactory = (type) => ({
   ...type,
