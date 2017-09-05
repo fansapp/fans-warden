@@ -274,6 +274,16 @@ const tests = () => {
     return expect(warden(blueprint, local)).to.be.rejectedWith();
   });
 
+  it('fails arrayOf arrayOf when data is not arrays', () => {
+    const blueprint = {
+      a: Types.arrayOf(Types.arrayOf(Types.string)),
+    };
+    const local = {
+      a: ['true', 'fail'],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
   // shapeOf
 
   it('supports shapeOf', () => {
@@ -376,6 +386,139 @@ const tests = () => {
     };
     return expect(warden(blueprint, local)).to.be.rejectedWith();
   });
+
+  // values() fails
+
+  it('fails if value not coherent with Type', () => {
+    const blueprint = {
+      a: Types.string.values(['l', 12]),
+    };
+    const local = {
+      a: 'd',
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if unsupported value in string', () => {
+    const blueprint = {
+      a: Types.string.values(['hello', 'hey']),
+    };
+    const local = {
+      a: 'fail',
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if unsupported value in array', () => {
+    const blueprint = {
+      a: Types.array.values(['hello', 12, true]),
+    };
+    const local = {
+      a: [false],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if unsupported value in shapeOf()', () => {
+    const blueprint = {
+      a: Types.shapeOf({
+        b: Types.string,
+        c: Types.number.isRequired.values([1, 2, 3]),
+      }),
+    };
+    const local = {
+      a: {
+        b: 'b',
+        c: 5,
+      },
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if support value in shapeOf() but isRequired', () => {
+    const blueprint = {
+      a: Types.shapeOf({
+        b: Types.string,
+        c: Types.number.isRequired.values([1, 2, 3]),
+      }),
+    };
+    const local = {
+      a: {
+        b: 'b',
+      },
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if unsupported value in arrayOf() shapeOf()', () => {
+    const blueprint = {
+      a: Types.arrayOf(Types.shapeOf({
+        b: Types.array.values([false, 42, 'hey']),
+      })),
+    };
+    const local = {
+      a: [
+        {
+          b: [42, false],
+        },
+        {
+          b: [52, false, 'hey'],
+        },
+      ]
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if values of arrayOf() are incoherent', () => {
+    const blueprint = {
+      a: Types.arrayOf(Types.string).values(['hey', 12]),
+    };
+    const local = {
+      a: ['hey', 'fail'],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if value not present if arrayOf() values', () => {
+    const blueprint = {
+      a: Types.arrayOf(Types.string).values(['hey', 'hello']),
+    };
+    const local = {
+      a: ['hey', 'fail'],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if value not present if arrayOf() of arrayOf() values', () => {
+    const blueprint = {
+      a: Types.arrayOf(Types.arrayOf(Types.string).values(['hello', 'test'])),
+    };
+    const local = {
+      a: [['fail'], ['test']],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if values on primitive type except for array is set inside arrayOf()', () => {
+    const blueprint = {
+      a: Types.arrayOf(Types.string.values('d')),
+    };
+    const local = {
+      a: ['a'],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('fails if values in array inside arrayOf is not provided', () => {
+    const blueprint = {
+      a: Types.arrayOf(Types.array.values([true, 12, 'hey'])),
+    };
+    const local = {
+      a: [[true], ['hey'], [13]],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
 };
 
 
