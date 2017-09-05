@@ -76,7 +76,7 @@ const crawler = (obj, localVal) => {
         const verifyOfValues = (blueprint, value) => {
           if (blueprint.vals !== null) {
             if (isArray(blueprint.vals) && blueprint.vals.some(v => typeof v !== blueprint.of.typeOf)) {
-              throw `some values in '${JSON.stringify(blueprint.vals)}' are uncoherent to the provided 'Type' in arrayOf()`;
+              throw `some values in '${JSON.stringify(blueprint.vals)}' are incoherent to the provided 'Type' in arrayOf()`;
             }
             validateValues(value, Types.array.typeOf, blueprint.vals);
           }
