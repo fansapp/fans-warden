@@ -6,6 +6,19 @@ import warden, { Types } from '../index';
 chai.use(chaiAsPromised);
 
 const tests = () => {
+
+  // Unexpected Types
+
+  it('fails on unexpected type', () => {
+    const blueprint = {
+      a: Types.String,
+    };
+    const local = {
+      a: 25,
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
   // primitives
 
   it('supports primitives', () => {

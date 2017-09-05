@@ -7,6 +7,11 @@ const crawler = (obj, localVal) => {
     const localValue = localVal[k];
     const blueprintValue = obj[k];
 
+    if (!isObject(blueprintValue)
+        || !blueprintValue.hasOwnProperty('required')
+        || !blueprintValue.hasOwnProperty('type')) {
+      throw "unexpected 'Type'";
+    }
     if (blueprintValue.required && localValue === undefined) {
       throw `'${k}' is required`;
     }
@@ -83,7 +88,8 @@ const crawler = (obj, localVal) => {
         }
         break;
 
-      default: break;
+      default:
+        throw "unexpected 'Type'";
     }
   });
 };
