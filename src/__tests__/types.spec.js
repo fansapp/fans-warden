@@ -79,6 +79,32 @@ const tests = () => {
   it('reflect shapeOf with faulty Type', () => {
     expect(() => Types.shapeOf('fail')).to.throw();
   });
+
+  // values
+
+  it('reflect values ', () => {
+    const values = ['hello', 'hey'];
+    expect(Types.string.values(values).vals).to.eql(values);
+  });
+
+  it('reflect values used with isRequired first', () => {
+    const values = ['hello', 'hey'];
+    expect(Types.string.isRequired.values(values).vals).to.eql(values);
+  });
+
+  it('reflect values used with isRequired second', () => {
+    const values = ['hello', 'hey'];
+    expect(Types.string.values(values).isRequired.vals).to.eql(values);
+  });
+
+  it('reflect values and isRequired have no specific order to work part 1', () => {
+    expect(Types.string.values(['hello', 'hey']).isRequired.required).to.eql(true);
+  });
+
+  it('reflect values and isRequired have no specific order to work part 2', () => {
+    expect(Types.string.isRequired.values(['hello', 'hey']).required).to.eql(true);
+  });
+
 };
 
 
