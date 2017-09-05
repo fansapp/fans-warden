@@ -65,7 +65,7 @@ By adding `.isRequired` at the end of the rule (ex: `Types.string.isRequired`), 
 
 *see example above*
 
-## values()
+## `values()`
 
 By adding the `values(array)` method, the data now has to be present inside the `array` passed to `values()`, or else the validation fails.
 You can also use `values(array)` and combinate it to `isRequired`.
