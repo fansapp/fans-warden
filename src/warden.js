@@ -60,6 +60,12 @@ const crawler = (obj, localVal) => {
         }
         break;
 
+      case Types.func.type:
+        if (typeof localValue !== Types.func.typeOf) {
+          throw `'${k}' needs to be a function`;
+        }
+        break;
+
       case Types.array.type:
         if (!isArray(localValue)) {
           throw `'${k}' needs to be an array`;
@@ -106,7 +112,7 @@ const crawler = (obj, localVal) => {
               // if the case is arrayOf(array)
               case Types.array.type:
                 if(!isArray(v)) {
-                  throw `'${k}' needs to be an array containing the specified 'Type'`;
+                  throw `'${k}' needs to be an array of type '${arrBlueprint.type}'`;
                 }
                 // test the values()
                 validateValues(v, Types.array.typeOf, arrBlueprint.vals);
@@ -114,13 +120,13 @@ const crawler = (obj, localVal) => {
               // if the case is arrayOf(shape)
               case Types.shape.type:
                 if (!isObject(v)) {
-                  throw `'${k}' needs to be an array containing the specified 'Type'`;
+                  throw `'${k}' needs to be an array of type '${arrBlueprint.type}'`;
                 }
                 break;
               // if the case is arrayOf(any other primitive)
               default:
                 if (typeof v !== arrBlueprint.typeOf) {
-                  throw `'${k}' needs to be an array containing the specified 'Type'`;
+                  throw `'${k}' needs to be an array of type '${arrBlueprint.type}'`;
                 }
                 if (arrBlueprint.type === Types.number.type) {
                   validateRange(v, arrBlueprint);

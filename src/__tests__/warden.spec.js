@@ -28,6 +28,7 @@ const tests = () => {
       c: Types.bool,
       d: Types.array,
       e: Types.shape,
+      f: Types.func,
     };
     const local = {
       a: 25,
@@ -35,6 +36,7 @@ const tests = () => {
       c: true,
       d: ['a', 'b'],
       e: { f: 'f', g: 'g' },
+      f: () => {},
     };
     return warden(blueprint, local).then(r => expect(r).to.eql(local));
   });
@@ -65,7 +67,7 @@ const tests = () => {
     return expect(warden(blueprint, local)).to.be.rejectedWith();
   });
 
-  it('fails boolean primitive', () => {
+  it('fails bool primitive', () => {
     const blueprint = {
       a: Types.string,
       b: Types.bool,
@@ -77,10 +79,10 @@ const tests = () => {
     return expect(warden(blueprint, local)).to.be.rejectedWith();
   });
 
-  it('fails boolean primitive', () => {
+  it('fails func primitive', () => {
     const blueprint = {
       a: Types.string,
-      b: Types.bool,
+      b: Types.func,
     };
     const local = {
       a: 'a',
@@ -198,6 +200,18 @@ const tests = () => {
     const local = {
       a: 'a',
       b: [12, 123],
+    };
+    return expect(warden(blueprint, local)).to.be.rejectedWith();
+  });
+
+  it('supports arrayOf func error', () => {
+    const blueprint = {
+      a: Types.string,
+      b: Types.arrayOf(Types.func),
+    };
+    const local = {
+      a: 'a',
+      b: [() => {}, 123],
     };
     return expect(warden(blueprint, local)).to.be.rejectedWith();
   });
