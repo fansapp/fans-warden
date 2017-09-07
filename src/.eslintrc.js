@@ -14,7 +14,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'max-len': ['warn', 100],
+    'max-len': [0],
     'comma-dangle': ['error', {
       arrays: 'always-multiline',
       objects: 'always-multiline',

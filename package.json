@@ -1,6 +1,6 @@
 {
   "name": "fans-warden",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A data warden designed to validate an 'object' based on a ruled blueprint. Can be used for the browser's 'localStorage' or API call requests/responses. Inspired by React's PropTypes.",
   "main": "./dist/index.js",
   "directories": {
