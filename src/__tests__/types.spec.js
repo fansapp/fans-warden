@@ -25,13 +25,17 @@ const tests = () => {
     expect(Types.shape.type).to.eql('shape');
   });
 
+  it('reflect shape type', () => {
+    expect(Types.func.type).to.eql('func');
+  });
+
   // primitives fail
 
   it('reflect non required state', () => {
     expect(Types.string.required).to.eql(false);
   });
 
-  it('reflect non required state', () => {
+  it('reflect required state', () => {
     expect(Types.string.isRequired.required).to.eql(true);
   });
 
@@ -51,6 +55,10 @@ const tests = () => {
 
   it('reflect arrayOf shape', () => {
     expect(Types.arrayOf(Types.shape).of.type).to.eql('shape');
+  });
+
+  it('reflect arrayOf func', () => {
+    expect(Types.arrayOf(Types.func).of.type).to.eql('func');
   });
 
   it('reflect arrayOf array', () => {

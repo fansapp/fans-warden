@@ -30,6 +30,8 @@ const rules = {
     prop9: Types.number.isRequired,
   })),
   prop10: Types.shape,
+  prop11: Types.func,
+  prop12: Types.func.isRequired,
 };
 
 const data = {...}; // the data you want to validate based on your rules
@@ -50,6 +52,7 @@ The different **Types** available for use are the following:
 - `Types.bool`
 - `Types.array`
 - `Types.shape`
+- `Types.func`
 - `Types.arrayOf()`
 - `Types.shapeOf()`
 

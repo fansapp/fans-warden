@@ -8,6 +8,7 @@ const primitives = {
   bool: typeFactory({ type: 'bool', typeOf: 'boolean', values }),
   array: typeFactory({ type: 'array', typeOf: 'object', values }),
   shape: typeFactory({ type: 'shape', typeOf: 'object' }),
+  func: typeFactory({ type: 'func', typeOf: 'function' }),
 };
 
 const advanced = {
